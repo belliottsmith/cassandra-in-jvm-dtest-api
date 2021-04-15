@@ -21,6 +21,7 @@ package org.apache.cassandra.distributed.api;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 
 import org.apache.cassandra.distributed.shared.Metrics;
@@ -86,6 +87,8 @@ public interface IInstance extends IIsolatedExecutor
 
     void receiveMessage(IMessage message);
 
+    void receiveMessageWithInvokingThread(IMessage message);
+
     int getMessagingVersion();
 
     void setMessagingVersion(InetSocketAddress addressAndPort, int version);
@@ -95,6 +98,8 @@ public interface IInstance extends IIsolatedExecutor
     void flush(String keyspace);
 
     void forceCompact(String keyspace, String table);
+
+    default Executor executorFor(int verb) { throw new UnsupportedOperationException(); }
 
     default boolean getLogsEnabled()
     {
